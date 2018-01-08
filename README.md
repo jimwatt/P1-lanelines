@@ -41,7 +41,7 @@ ipython P1.py -- -h
 
 ### Process images
 
-To proces all images in the ./test_images directory,
+To process all images in the ./test_images directory,
 
 ```
 ipython P1.py
@@ -49,7 +49,7 @@ ipython P1.py
 
 ### Process videos
 
-To proces all videos in the ./test_videos directory,
+To process all videos in the ./test_videos directory,
 
 ```
 ipython P1.py -- --video

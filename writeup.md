@@ -1,13 +1,13 @@
 # **Finding Lane Lines on the Road** 
-####James Watt  
-Udacity Self-Driving Car Nanodegree:
-Project 1
+####James Watt
+**Udacity Self-Driving Car Nanodegree:
+Project 1**
 
 ---
 
 ## 1. Goal
 
-Make a pipeline that finds and annotates lane lines in video of a roadway.
+Make a pipeline that finds and annotates lane lines in imagery or streaming video of a roadway.
 
 [//]: # (Image References)
 
@@ -29,7 +29,46 @@ Make a pipeline that finds and annotates lane lines in video of a roadway.
 
 ---
 
-## 2. The Computational Pipeline.
+## 2. Code Repository
+My code implementation for this pipeline is hosted in the GitHub repository:
+
+<https://github.com/jimwatt/lanelines.git>
+
+**Please note that I have not provided a Jupyter Notebook.**  I find development to be much faster and more cleanly organized outside of Jupyter.  My hope is that this document contains all the step by step information and results that would be provided for reviewers in a Jupyter Notebook.  
+
+The code is chiefly contained in two scripts:
+
+* [P1.py](./P1.py) is the main entry point for the code.
+* [utilities.py](./utilities.py) provides the main algorithmic functions.
+
+---
+
+## 2. Running the Code
+
+Please see the [README.md](./README.md) file for usage instructions.  Very briefly,
+
+
+To get usage and help:
+
+```
+ipython P1.py -- -h
+```
+
+To process all images in the ./test_images directory:
+
+```
+ipython P1.py
+```
+
+To process all videos in the ./test_videos directory:
+
+```
+ipython P1.py -- --video
+```
+
+___
+
+## 3. The Computational Pipeline.
 
 Given an image (or video stream) of the roadway,
 ![alt text][image0]
@@ -62,11 +101,11 @@ Use slope and location to differentiate between left lane lines, and right lane 
 ![alt text][image7]
 
 ##### Step 7. 
-Use RANSAC linear regression to generate a single representative left lane line, and single representative right lane line. 
+Use RANSAC linear regression to generate a single representative left lane line, and single representative right lane line. The RANSAC linear regressor is implemented using scikit-learn.
 ![alt text][image8]
+___
 
-
-## 3. Results
+## 4. Results
 
 ### Processing of still images:
 
@@ -99,14 +138,14 @@ Use RANSAC linear regression to generate a single representative left lane line,
 ##### Challenge
 <video width="520" height="320" controls src="test_videos_output/challenge.mp4" frameborder="0" allowfullscreen></video>
 
-## 4. Code Repository
-My code implementation for this pipeline is in the following GitHub repository.
-
+---
 ## 5. Potential Shortcomings
+* The algorithms have not been tested on very much data -- only three movies.  Current performance is good on solidWhiteRight.mp4 and solidYellowLeft.mp4.  Performance is marginal on challenge.mp4.  Performance can be improved further on challenge.mp4 by further specific tuning, although we run the danger of tuning to only this movie making it fragile to new situations.  I perfer to stop further tuning at this point until a larger dataset can be obtained, ensuring more robustness and generalization. 
+* I used the RANSAC linear regression algorithm for "averaging" multiple hough lines to obtain a single representative lane line.  This has the benefit of recognizing and discarding outliers (stray lines due to cat's eyes and lane markers close to the lane line, for example).  However, this approach does have a potential shortcoming.  For the case of dotted lines, if only two lines are detected and due to road curvature the two lines are at different angles, the RANSAC approach will likely entirely discard one of the lines as an outlier, rather than attempting to average the two lines.  This does not appear to be a problem for the given videos, but could be a problem in other cases.
 
 
-
-
+---
 ## 6. Possible Improvements
-
+* For the challenge.mpf video, it is clear that the algorithm has a difficult time when the road surface changes from asphalt to concrete, and from concrete to asphalt.  The sharp line between the two surfaces confuses the linear regression algorithm.  An improvement would be to further gate which line angles will be considered for lane lines to remove these spurious lines. We could gain better performance by considering that the lane lines do not change their relative position and relative angles very much to filter spurious lines.
+* I would be interested in applying a sequential filtering approach.  At present, the algorithm processes each image independently, and no information from prior images is used to improve accuracy.  We could leverage the fact that (in global space) the lane lines do not move, and therefore we expect persistence from frame to frame.  We could use a Kalman filtering appproach to estimate parameters for the lane line.  In this approach, the images are treated as measurements to _update_ our estimates of the lane lines, rather than generating them from whole cloth at each frame.
 

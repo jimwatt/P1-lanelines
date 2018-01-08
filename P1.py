@@ -17,7 +17,7 @@ import utilities as ut
 # The main process_image() function takes an image as input, and returns the same image with lane lines annotated.
 def process_image(image,vertextype):
 
-    # Define parameters
+    # Define parameters for the various transforms and algrotihms:
     kernel_size = 5         # size of Gaussian smoothing kernel
     low_threshold = 50      # low-threshold for canny edge detection
     high_threshold = 150    # high-threshold for canny edge detection
@@ -26,6 +26,8 @@ def process_image(image,vertextype):
     threshold = 5           # minimum number of votes (intersections in Hough grid cell)
     min_line_length = 10    # minimum number of pixels making up a line
     max_line_gap = 20       # maximum gap in pixels between connectable line segments
+
+    # The Main Computational Pipeline:
 
     # 0. Get dimensions for our image
     imshape = image.shape
@@ -62,7 +64,7 @@ def process_image(image,vertextype):
         righty = ut.averageLines(rightlines,rightx).astype(np.int)
         cv2.line(final_image, (rightx[0],righty[0]), (rightx[1], righty[1]), [0, 255, 0], 6)
             
-    # We are DONE!  The rest is just plotting of the steps in the pipeline.
+    # We are DONE!  The rest is just plotting of the steps in the pipeline for generating the write-up.
 
     plot_pipeline = False
 
@@ -162,7 +164,7 @@ if __name__ == '__main__':
             image = mpimg.imread(fullname)
             procimg = process_image(image,vertextype)
             
-            # Save the output figure
+            # Save the output figures
             savename = os.path.join('test_images_output', imagename)
             plt.figure()
             plt.imshow(procimg)
@@ -182,8 +184,6 @@ if __name__ == '__main__':
             clip1 = VideoFileClip(videoclip)
             processed_clip = clip1.fl_image(lambda image: process_image(image,vertextype)) # run the lane lines processor
             get_ipython().run_line_magic('time', 'processed_clip.write_videofile(processed_video, audio=False)')    # save the output
-
-
 
     print("DONE!!!")
 

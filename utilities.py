@@ -10,15 +10,19 @@ import numpy as np
 # Generic helper functions
 ######################################################################
 
+# Convert an image to grayscale
 def grayscale(img):
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    
+
+# Apply canny edge detection
 def canny(img, low_threshold, high_threshold):
     return cv2.Canny(img, low_threshold, high_threshold)
 
+# Apply a Gaussian kernel to smooth an image
 def gaussian_blur(img, kernel_size):
     return cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
 
+# Mask an image by the polygon defined in vertices
 def region_of_interest(img, vertices):
     mask = np.zeros_like(img)   
     ignore_mask_color = 255  
@@ -26,15 +30,18 @@ def region_of_interest(img, vertices):
     masked_image = cv2.bitwise_and(img, mask)
     return masked_image, mask
 
+# Draw lines on an image.
 def draw_lines(img, lines, color=[255, 0, 0], thickness=2):
     for line in lines:
         x1,y1,x2,y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), color, thickness)
 
+# Appply the hough transform to detect lines in an image
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
     return lines
 
+# Cobine two images with weightings.
 def weighted_img(img, initial_img, α=0.8, β=1., λ=0.):
     return cv2.addWeighted(initial_img, α, img, β, λ)
 
@@ -43,6 +50,7 @@ def weighted_img(img, initial_img, α=0.8, β=1., λ=0.):
 # Sub-Algorithms for detecting lane lines
 ##############################################################################
 
+# Given a set of lines, determine which belong to the left and right lane lines.
 def separateLeftRightLines(lines,imx,imy):
     # Given the image size imx,imy, sort lines into left and right using slope and location
     left = []
@@ -59,6 +67,7 @@ def separateLeftRightLines(lines,imx,imy):
             left.append(line)
     return left,right
 
+# Sample points along a given line
 def sampleLine(x1,y1,x2,y2,ds): 
     # Given a line defined by endpoints (x1,y1) ad (x2,y2), return points sampled along the line with spacing ds   
     p1,p2 = np.array([x1,y1]),np.array([x2,y2])
@@ -68,6 +77,7 @@ def sampleLine(x1,y1,x2,y2,ds):
     ptsy = np.linspace(y1,y2,numpts)  
     return np.vstack((ptsx,ptsy))
 
+# Use RANSAC linear regression to average multiple lines.
 def averageLines(lines,xvals):
     # Given lines, compute a single representative line using ransac linear regression to reject outliers, and evaluate that line for
     # the given xvals. 
@@ -82,6 +92,7 @@ def averageLines(lines,xvals):
     lr.fit(allpts[0,:].reshape(-1, 1), allpts[1,:].reshape(-1, 1))
     return lr.predict(xvals.reshape(-1, 1))
 
+# Get the vertices for the region of interest polytope.
 def getVertices(image,vertextype):
     # The challenge.mp4 movie requires a different vertex set to define the mask region.
     imshape = image.shape
