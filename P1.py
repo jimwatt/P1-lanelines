@@ -67,7 +67,7 @@ def process_image(image,vertextype):
     plot_pipeline = False
 
     if plot_pipeline:
-        print "Plotting pipeline ..."
+        print("Plotting pipeline ...")
 
         # Plot the original image
         plt.figure(1)
@@ -140,13 +140,13 @@ if __name__ == '__main__':
 
     # Do we want to process the test images, the test videos, or both
     processimages = True
-    processvideos = True
+    processvideos = False
 
     if(processimages):
         print('Processing images ...')
         imagenames = os.listdir("test_images/")
         vertextype = 'standard'
-        for imagename in imagenames[3:4]:    # process each image in the directory
+        for imagename in imagenames:    # process each image in the directory
             fullname = os.path.join('test_images', imagename)
             image = mpimg.imread(fullname)
             procimg = process_image(image,vertextype)
@@ -155,6 +155,7 @@ if __name__ == '__main__':
             savename = os.path.join('test_images_output', imagename)
             plt.figure()
             plt.imshow(procimg)
+            plt.title(imagename)
             plt.savefig(savename)
             
     if(processvideos):
