@@ -135,15 +135,26 @@ def process_image(image,vertextype):
     return final_image
 
 ##########################################################################################
+import argparse
 
 if __name__ == '__main__':
 
-    # Do we want to process the test images, the test videos, or both
-    processimages = True
-    processvideos = False
+    # Give usage, help, and parse command line arguments
+    parser = argparse.ArgumentParser(description="Script for detecting and annotating lane lines in images or videos.",usage='ipython %(prog)s -- [options]')
+    parser.add_argument('-v','--video', action='store_true',help="process videos instead (images are processed by default).")
+    args = parser.parse_args()
 
+    # Do we want to process the test images, the test videos, or both?
+    if(args.video):
+        processimages = False 
+        processvideos = True
+    else :
+        processimages = True
+        processvideos = False
+
+    # Process images
     if(processimages):
-        print('Processing images ...')
+        print('Processing images in directory: test_images')
         imagenames = os.listdir("test_images/")
         vertextype = 'standard'
         for imagename in imagenames:    # process each image in the directory
@@ -157,9 +168,10 @@ if __name__ == '__main__':
             plt.imshow(procimg)
             plt.title(imagename)
             plt.savefig(savename)
-            
+    
+    # Process videos  
     if(processvideos):
-        print('Processing videos ...')
+        print('Processing videos in directory: test_videos')
         videos = os.listdir("test_videos/")
         for video in videos:            # process each video in the directory
             vertextype = 'standard'
@@ -170,6 +182,8 @@ if __name__ == '__main__':
             clip1 = VideoFileClip(videoclip)
             processed_clip = clip1.fl_image(lambda image: process_image(image,vertextype)) # run the lane lines processor
             get_ipython().run_line_magic('time', 'processed_clip.write_videofile(processed_video, audio=False)')    # save the output
+
+
 
     print("DONE!!!")
 
