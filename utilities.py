@@ -59,7 +59,7 @@ def separateLeftRightLines(lines,imx,imy):
     for line in lines:
         x1,y1,x2,y2 = line[0]        
         angle = np.arctan2(y2-y1,x2-x1)
-        if(angle<0):        #make all angles between 0 an pi.
+        if(angle<0):        #make all angles between 0 and pi.
             angle += np.pi
         if(  angle>(da*np.pi) and angle<(0.5-da)*np.pi and 0.5*(x1+x2)>imx/2+20):
             right.append(line)
