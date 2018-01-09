@@ -84,7 +84,7 @@ Smooth the image with a Gaussian kernel.
 ![alt text][image2]
 
 ##### Step 3.
-Use the Canny algorithm to detect images in the smoothed grayscale image.
+Use the Canny algorithm to detect edges in the smoothed grayscale image.
 ![alt text][image3]
 
 ##### Step 4. 
