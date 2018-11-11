@@ -4,8 +4,6 @@ A computer vision pipeline written in Python for detecting lane lines in imagery
 
 ![alt text][image12]
 
-<video width="520" height="320" controls src="test_videos_output/solidWhiteRight.mp4" frameborder="0" allowfullscreen></video>
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes using basic examples.
