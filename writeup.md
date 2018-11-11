@@ -9,7 +9,7 @@ Project 1**
 
 Make a pipeline that finds and annotates lane lines in imagery or streaming video of a roadway.
 
-[//]: # (Image References)
+[//]: # "Image References"
 
 [image0]: ./pipeline/fig0_original.png "Original"
 [image1]: ./pipeline/fig1_grayscale.png "Grayscale"
@@ -130,10 +130,10 @@ ___
 ### Processing of streaming video: 
 
 ##### Solid White Right
-<video width="520" height="320" controls src="test_videos_output/SolidWhiteRight.mp4" frameborder="0" allowfullscreen></video>
+<video width="520" height="320" controls src="test_videos_output/solidWhiteRight.mp4" frameborder="0" allowfullscreen></video>
 
 ##### Solid Yellow Left
-<video width="520" height="320" controls src="test_videos_output/SolidYellowLeft.mp4" frameborder="0" allowfullscreen></video>
+<video width="520" height="320" controls src="test_videos_output/solidYellowLeft.mp4" frameborder="0" allowfullscreen></video>
 
 ##### Challenge
 <video width="520" height="320" controls src="test_videos_output/challenge.mp4" frameborder="0" allowfullscreen></video>
@@ -142,7 +142,6 @@ ___
 ## 5. Potential Shortcomings
 * The algorithms have not been tested on very much data -- only three movies.  Current performance is good on solidWhiteRight.mp4 and solidYellowLeft.mp4.  Performance is marginal on challenge.mp4.  Performance can be improved further on challenge.mp4 by further specific tuning, although we run the danger of tuning to only this movie making it fragile to new situations.  I perfer to stop further tuning at this point until a larger dataset can be obtained, ensuring more robustness and generalization. 
 * I used the RANSAC linear regression algorithm for "averaging" multiple hough lines to obtain a single representative lane line.  This has the benefit of recognizing and discarding outliers (stray lines due to cat's eyes and lane markers close to the lane line, for example).  However, this approach does have a potential shortcoming.  For the case of dotted lines, if only two lines are detected and due to road curvature the two lines are at different angles, the RANSAC approach will likely entirely discard one of the lines as an outlier, rather than attempting to average the two lines.  This does not appear to be a problem for the given videos, but could be a problem in other cases.
-
 
 ---
 ## 6. Possible Improvements
